@@ -1,9 +1,9 @@
 FROM node:8 as builder
 WORKDIR /usr/src/app
-COPY package*.json ./
+COPY src/package*.json ./
 ENV NODE_ENV=production
 RUN npm install --production
-COPY . .
+COPY src .
 
 
 FROM arm32v7/node
