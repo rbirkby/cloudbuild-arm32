@@ -1,0 +1,7 @@
+k8s-gcr-auth-ro.json
+build.sh
+installbinfmt.sh
+create-gcloud-serviceaccount.sh
+create-k8s-registry-secret.sh
+
+
