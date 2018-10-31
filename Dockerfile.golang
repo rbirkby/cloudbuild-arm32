@@ -1,0 +1,8 @@
+FROM golang:1.10 AS builder
+COPY go-src/server /app
+RUN cd /app && go build -o server server.go
+
+FROM alpine
+WORKDIR /app
+COPY --from=builder /app/server /app/server
+ENTRYPOINT /app/server
