@@ -1,5 +1,9 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/cloudbuild-arm32', '.']
+    args: ['build', '-t=gcr.io/$PROJECT_ID/cloudbuild-arm32:arm32', '-f=Dockerfile', '.']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t=gcr.io/$PROJECT_ID/cloudbuild-arm32:cloudrun', '-f=Dockerfile.cloudrun', '.']
 images:
-- 'gcr.io/$PROJECT_ID/cloudbuild-arm32'
+  - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:arm32'
+  - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:cloudrun'
+
