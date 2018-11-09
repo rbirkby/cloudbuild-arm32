@@ -14,20 +14,36 @@ steps:
     args: ['build', '-t=gcr.io/$PROJECT_ID/cloudbuild-arm32:golang', '-f=Dockerfile.golang', '.']
     waitFor: ['-']
 
+  - id: build-python
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t=gcr.io/$PROJECT_ID/cloudbuild-arm32:python', '-f=Dockerfile.python', '.']
+    waitFor: ['-']
+
   - id: push-cloudrun
     name: 'gcr.io/cloud-builders/docker'
     args: ["push", "gcr.io/$PROJECT_ID/cloudbuild-arm32:cloudrun"]
     waitFor: [build-cloudrun]
+
+  - id: push-python
+    name: 'gcr.io/cloud-builders/docker'
+    args: ["push", "gcr.io/$PROJECT_ID/cloudbuild-arm32:python"]
+    waitFor: [build-python]
 
   - id: deploy-cloudrun
     name: 'gcr.io/cloud-builders/gcloud'
     args: ['alpha', 'serverless', 'deploy', 'cloudbuild-arm32', '--image', 'gcr.io/$PROJECT_ID/cloudbuild-arm32:cloudrun', '--region', 'us-central1']
     waitFor: [push-cloudrun]
 
+  - id: deploy-python
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: ['alpha', 'serverless', 'deploy', 'cloudbuild-python', '--image', 'gcr.io/$PROJECT_ID/cloudbuild-arm32:python', '--region', 'us-central1']
+    waitFor: [push-python]
+
 images:
   - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:arm32'
   - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:cloudrun'
   - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:golang'
+  - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:python'
 
 tags:
   - cloud-run-playground
