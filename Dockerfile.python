@@ -2,6 +2,6 @@ FROM python:2 as builder
 WORKDIR /usr/src/app
 COPY python-src/Pipfile* ./
 RUN pip install PipEnv
-RUN pipenv install --production
+RUN pipenv install
 COPY python-src .
 CMD [ "python", "server.py" ]
