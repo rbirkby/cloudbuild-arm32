@@ -1,6 +1,6 @@
 FROM python:2 as builder
 WORKDIR /usr/src/app
-COPY python-src/PipEnv*.json ./
+COPY python-src/Pipfile*.json ./
 RUN pip install PipEnv
 RUN pipenv install --production
 COPY python-src .
