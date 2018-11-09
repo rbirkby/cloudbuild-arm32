@@ -29,3 +29,5 @@ images:
   - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:cloudrun'
   - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:golang'
 
+tags:
+  - cloud-run-playground
