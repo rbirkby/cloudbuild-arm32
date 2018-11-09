@@ -4,4 +4,4 @@ COPY python-src/Pipfile* ./
 RUN pip install PipEnv
 RUN pipenv install
 COPY python-src .
-CMD [ "python", "server.py" ]
+CMD [ "pipenv", "run", "python", "server.py" ]
