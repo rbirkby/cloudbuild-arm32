@@ -16,9 +16,10 @@ Cloud Run commands
 
 ```bash
 $ gcloud alpha run deploy --image gcr.io/<project>/<image>:<tag>
+$ gcloud alpha run list
 ```
 
-In the log output, you should see "Service ... revision ... has been deploy and is serving traffic at <endpoint>
+In the log output for a deploy or a build, you should see "Service ... revision ... has been deploy and is serving traffic at <endpoint>
 
 
 
