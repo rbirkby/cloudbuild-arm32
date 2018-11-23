@@ -4,7 +4,22 @@ This is a simple NodeJS Express server within an ARM container
 
 ### Instructions
 
-deploy-cloudrun.sh - 
+Cloud Build commands
+
+```bash
+$ gcloud builds submit
+$ gcloud builds list --ongoing
+$ gcloud builds log <build id> --stream
+```
+
+Cloud Run commands
+
+```bash
+$ gcloud alpha run deploy --image gcr.io/<project>/<image>:<tag>
+```
+
+In the log output, you should see "Service ... revision ... has been deploy and is serving traffic at <endpoint>
+
 
 
 ### Dockerfile.cloudrun
