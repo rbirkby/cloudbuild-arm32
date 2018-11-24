@@ -1,6 +1,5 @@
 k8s-gcr-auth-ro.json
 node_modules
-qemu-arm-static
 create-gcloud-serviceaccount.sh
 create-k8s-registry-secret.sh
 installbinfmt.sh
