@@ -19,6 +19,11 @@ steps:
     args: ['build', '-t=gcr.io/$PROJECT_ID/cloudbuild-arm32:python', '-f=Dockerfile.python', '.']
     waitFor: ['-']
 
+  - id: build-shim
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t=gcr.io/$PROJECT_ID/cloudbuild-arm32:shim', '-f=Dockerfile.shim', '.']
+    waitFor: ['-']
+
   - id: push-cloudrun
     name: 'gcr.io/cloud-builders/docker'
     args: ["push", "gcr.io/$PROJECT_ID/cloudbuild-arm32:cloudrun"]
@@ -28,6 +33,11 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     args: ["push", "gcr.io/$PROJECT_ID/cloudbuild-arm32:python"]
     waitFor: [build-python]
+
+  - id: push-shim
+    name: 'gcr.io/cloud-builders/docker'
+    args: ["push", "gcr.io/$PROJECT_ID/cloudbuild-arm32:shim"]
+    waitFor: [build-shim]
 
   - id: deploy-cloudrun
     name: 'gcr.io/cloud-builders/gcloud'
@@ -44,6 +54,7 @@ images:
   - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:cloudrun'
   - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:golang'
   - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:python'
+  - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:shim'
 
 tags:
   - cloud-run-playground

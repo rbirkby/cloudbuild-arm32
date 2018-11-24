@@ -1,0 +1,14 @@
+FROM resin/raspberry-pi-python:2
+#COPY ./qemu-arm-static /usr/bin/qemu-arm-static
+RUN apt-get update
+RUN sudo apt-get install python-ledshim python-numpy
+ADD pulse.py /
+CMD ["python", "./pulse.py"]
+
+# On host, sudo raspi-config / 5 Interfacing Options #/ I2C / Enable
+# docker build .
+# Run with docker run --device /dev/i2c-1 -it <tag>
+
+# TODO:
+# Reduce size of docker image. Can I run it from Alpine or a Python-alpine image?
+# Can I get cloud build to create the image?

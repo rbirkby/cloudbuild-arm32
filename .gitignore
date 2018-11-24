@@ -5,3 +5,4 @@ create-gcloud-serviceaccount.sh
 create-k8s-registry-secret.sh
 installbinfmt.sh
 Dockerfile.old
+.vscode
