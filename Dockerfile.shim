@@ -11,4 +11,3 @@ CMD ["python", "./pulse.py"]
 
 # TODO:
 # Reduce size of docker image. Can I run it from Alpine or a Python-alpine image?
-# Can I get cloud build to create the image?
