@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pulse-demo
+spec:
+  containers:
+  - name: shim
+    image: gcr.io/sonorous-crane-219712/cloudbuild-arm32:shim
+    resources:
+      limits:
+        memory: "200Mi"
+        cpu: "500m"
+    securityContext:
+      privileged: true
+  nodeSelector:
+    kubernetes.io/hostname: rpi3-k8s-1
