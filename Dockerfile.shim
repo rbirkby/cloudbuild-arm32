@@ -2,7 +2,7 @@ FROM resin/raspberry-pi-python:2
 COPY ./qemu-arm-static /usr/bin/qemu-arm-static
 RUN apt-get update
 RUN sudo apt-get install python-ledshim python-numpy
-ADD pulse.py /
+ADD shim-src/pulse.py /
 CMD ["python", "./pulse.py"]
 
 # On host, sudo raspi-config / 5 Interfacing Options #/ I2C / Enable
