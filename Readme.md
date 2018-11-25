@@ -24,7 +24,7 @@ In the log output for a deploy or a build, you should see "Service ... revision 
 Enable scheduling of pods onto the k8s master node:
 
 ```bash
-kubectl taint node mymasternode node-role.kubernetes.io/master:NoSchedule-
+kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
 GCloud commands
