@@ -32,7 +32,10 @@ GCloud commands
 Install the SDK on a worker node:
 
 ```bash
+sudo raspi-config # 5 Interfacing Options #/ I2C / Enable
 curl https://sdk.cloud.google.com | bash
+gcloud init
+gcloud auth configure-docker
 ```
 
 ### pulse.yaml
