@@ -36,6 +36,8 @@ sudo raspi-config # 5 Interfacing Options #/ I2C / Enable
 curl https://sdk.cloud.google.com | bash
 gcloud init
 gcloud auth configure-docker
+kubectl label nodes rpi3-k8s-1 hardware=ledshim
+kubectl label nodes rpi3-k8s-2 hardware=ledshim
 ```
 
 ### pulse.yaml
