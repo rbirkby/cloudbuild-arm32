@@ -2,22 +2,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pulse-demo
+  name: inky-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: pulse-demo
+      app: inky-service
   template:
     metadata:
       labels:
-        app: pulse-demo
+        app: inky-service
     spec:
       nodeSelector:
-        hardware: ledshim
+        hardware: inky
       containers:
-      - name: shim
-        image: gcr.io/sonorous-crane-219712/cloudbuild-arm32:shim
+      - name: inky
+        image: gcr.io/sonorous-crane-219712/cloudbuild-arm32:inky
+        # imagePullPolicy: Always
         resources:
           limits:
             memory: "200Mi"

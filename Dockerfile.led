@@ -1,7 +1,7 @@
 FROM resin/raspberry-pi-python:2
 RUN apt-get update
 RUN sudo apt-get install python-ledshim python-numpy
-ADD shim-src/pulse.py /
+ADD src/led/pulse.py /
 CMD ["python", "./pulse.py"]
 
 # On host, sudo raspi-config / 5 Interfacing Options #/ I2C / Enable
@@ -10,3 +10,4 @@ CMD ["python", "./pulse.py"]
 
 # TODO:
 # Reduce size of docker image. Can I run it from Alpine or a Python-alpine image?
+# Get imagePullPolicy: Always working (gcr permissions)

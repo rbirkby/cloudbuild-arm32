@@ -32,12 +32,16 @@ GCloud commands
 Install the SDK on a worker node:
 
 ```bash
-sudo raspi-config # 5 Interfacing Options #/ I2C / Enable
+sudo raspi-config # on rpi3-k8s-{1,2}: 5 Interfacing Options #/ I2C / Enable
+sudo raspi-config # on rpi3-k8s-4: 5 Interfacing Options #/ SPI / Enable
 curl https://sdk.cloud.google.com | bash
 gcloud init
 gcloud auth configure-docker
 kubectl label nodes rpi3-k8s-1 hardware=ledshim
 kubectl label nodes rpi3-k8s-2 hardware=ledshim
+kubectl label nodes rpi3-k8s-4 hardware=inky
+kubectl label nodes rpi3-k8s-0 hardware=tof
+kubectl label nodes rpi3-k8s-3 hardware=buttons
 ```
 
 ### pulse.yaml

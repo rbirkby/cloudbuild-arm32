@@ -1,0 +1,11 @@
+FROM resin/raspberry-pi-python:2
+RUN apt-get update
+RUN sudo apt-get install python-pip
+RUN sudo pip install smbus2
+RUN sudo pip install vl53l1x
+ADD src/tof/graph.py /
+CMD ["python", "./graph.py"]
+
+# On host, sudo raspi-config / 5 Interfacing Options #/ I2C / Enable
+# docker build .
+# Run with docker run --device /dev/i2c-1 -it <tag>

@@ -1,0 +1,9 @@
+FROM resin/raspberry-pi-python:2
+RUN apt-get update
+RUN sudo apt-get install python-buttonshim
+ADD src/buttons/rainbow.py /
+CMD ["python", "./rainbow.py"]
+
+# On host, sudo raspi-config / 5 Interfacing Options #/ I2C / Enable
+# docker build .
+# Run with docker run --device /dev/i2c-1 -it <tag>
