@@ -25,3 +25,5 @@ spec:
             cpu: "500m"
         securityContext:
           privileged: true
+      imagePullSecrets:
+      - name: gcrsecret

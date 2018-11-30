@@ -1,6 +1,7 @@
 FROM resin/raspberry-pi-python:2
 RUN apt-get update
 RUN sudo apt-get install python-buttonshim
+# TODO: Do we need sudo pip install smbus2
 ADD src/buttons/rainbow.py /
 CMD ["python", "./rainbow.py"]
 

@@ -32,7 +32,7 @@ GCloud commands
 Install the SDK on a worker node:
 
 ```bash
-sudo raspi-config # on rpi3-k8s-{1,2}: 5 Interfacing Options #/ I2C / Enable
+sudo raspi-config # on rpi3-k8s-{1,2,3}: 5 Interfacing Options #/ I2C / Enable
 sudo raspi-config # on rpi3-k8s-4: 5 Interfacing Options #/ SPI / Enable
 curl https://sdk.cloud.google.com | bash
 gcloud init

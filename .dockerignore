@@ -3,5 +3,5 @@ build.sh
 installbinfmt.sh
 create-gcloud-serviceaccount.sh
 create-k8s-registry-secret.sh
-
+rpi3-k8s-gcr.key
 
