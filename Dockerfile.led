@@ -1,8 +1,14 @@
 FROM resin/raspberry-pi-python:2
 RUN apt-get update
-RUN sudo apt-get install python-ledshim python-numpy
+RUN sudo apt-get install python-ledshim python-numpy python-pip python-markupsafe
+RUN python -m pip install --upgrade pip # https://stackoverflow.com/questions/49940813/pip-no-module-named-internal
+RUN pip install flask
+
 ADD src/led/pulse.py /
-CMD ["python", "./pulse.py"]
+ENV FLASK_APP /pulse.py
+ENV FLASK_ENV development
+EXPOSE 5000
+CMD ["flask", "run", "--host=0.0.0.0"]
 
 # On host, sudo raspi-config / 5 Interfacing Options #/ I2C / Enable
 # docker build .

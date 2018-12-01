@@ -1,6 +1,8 @@
 FROM resin/raspberry-pi-python:2
 RUN apt-get update
-RUN sudo apt-get install python-buttonshim
+RUN sudo apt-get install python-buttonshim python-pip
+RUN python -m pip install --upgrade pip # https://stackoverflow.com/questions/49940813/pip-no-module-named-internal
+RUN pip install requests
 # TODO: Do we need sudo pip install smbus2
 ADD src/buttons/rainbow.py /
 CMD ["python", "./rainbow.py"]

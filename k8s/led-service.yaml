@@ -1,0 +1,50 @@
+# kubectl apply -f led.yaml
+# kubectl replace --force -f led.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: led-service
+  labels:
+    app: led-service
+spec:
+  ports:
+  - port: 80
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    app: led-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: led-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: led-service
+  template:
+    metadata:
+      labels:
+        app: led-service
+    spec:
+      nodeSelector:
+        hardware: ledshim
+      containers:
+      - name: led
+        image: gcr.io/sonorous-crane-219712/cloudbuild-arm32:led
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "0"
+        resources:
+          limits:
+            memory: "200Mi"
+            cpu: "500m"
+        securityContext:
+          privileged: true
+      imagePullSecrets:
+      - name: gcrsecret

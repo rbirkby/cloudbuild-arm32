@@ -2,23 +2,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: led-service
+  name: tof-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: led-service
+      app: tof-service
   template:
     metadata:
       labels:
-        app: led-service
+        app: tof-service
     spec:
       nodeSelector:
-        hardware: ledshim
+        hardware: tof
       containers:
-      - name: led
-        image: gcr.io/sonorous-crane-219712/cloudbuild-arm32:led
-        # imagePullPolicy: Always
+      - name: tof
+        image: gcr.io/sonorous-crane-219712/cloudbuild-arm32:tof
+        imagePullPolicy: Always
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "0"
         resources:
           limits:
             memory: "200Mi"
