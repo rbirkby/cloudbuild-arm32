@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# MIT License
+# Original code: https://github.com/pimoroni/led-shim
+
 import colorsys
 import time
 from flask import Flask
@@ -16,6 +19,7 @@ import ledshim
 ledshim.set_clear_on_exit()
 lock = threading.Lock()
 hue = 0.5
+distance = 800
 app = Flask(__name__)
 
 @app.route("/health")
@@ -63,6 +67,14 @@ def e():
         hue = 0.8
     return "OK"
 
+@app.route("/size/<int:newDistance>", methods=['POST'])
+def size(newDistance):
+    global distance
+    print "Received a distance update" + str(newDistance)
+    with lock:
+        distance = newDistance
+    return "OK"
+
 def make_gaussian(fwhm):
     x = np.arange(0, ledshim.NUM_PIXELS, 1, float)
     y = x[:, np.newaxis]
@@ -81,7 +93,7 @@ def pulse():
             with lock:
                 for x in range(ledshim.NUM_PIXELS):
                     h = hue
-                    s = 1.0
+                    s = 1.0 * (distance/float(800))
                     v = gauss[x, y]
                     rgb = colorsys.hsv_to_rgb(h, s, v)
                     r, g, b = [int(255.0 * i) for i in rgb]

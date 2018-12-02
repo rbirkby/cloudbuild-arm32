@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# MIT License
+# Original code: https://github.com/pimoroni/button-shim
+
 import signal
 import buttonshim
 import requests
@@ -17,7 +20,8 @@ Press Ctrl+C to exit.
 def button_a(button, pressed):
     buttonshim.set_pixel(0x94, 0x00, 0xd3)
     try:
-        r = requests.post('http://led-service/display/a')
+        r = requests.post('http://led-service/display/a', timeout=3)
+        r = requests.post('http://inky-service/display/a', timeout=3)
     except requests.exceptions.RequestException as e:
         print e
 
@@ -25,7 +29,8 @@ def button_a(button, pressed):
 def button_b(button, pressed):
     buttonshim.set_pixel(0x00, 0x00, 0xff)
     try:
-        r = requests.post('http://led-service/display/b')
+        r = requests.post('http://led-service/display/b', timeout=3)
+        r = requests.post('http://inky-service/display/b', timeout=3)
     except requests.exceptions.RequestException as e:
         print e
 
@@ -33,7 +38,8 @@ def button_b(button, pressed):
 def button_c(button, pressed):
     buttonshim.set_pixel(0x00, 0xff, 0x00)
     try:
-        r = requests.post('http://led-service/display/c')
+        r = requests.post('http://led-service/display/c', timeout=3)
+        r = requests.post('http://inky-service/display/c', timeout=3)
     except requests.exceptions.RequestException as e:
         print e
 
@@ -41,7 +47,8 @@ def button_c(button, pressed):
 def button_d(button, pressed):
     buttonshim.set_pixel(0xff, 0xff, 0x00)
     try:
-        r = requests.post('http://led-service/display/d')
+        r = requests.post('http://led-service/display/d', timeout=3)
+        r = requests.post('http://inky-service/display/d', timeout=3)
     except requests.exceptions.RequestException as e:
         print e
 
@@ -49,7 +56,8 @@ def button_d(button, pressed):
 def button_e(button, pressed):
     buttonshim.set_pixel(0xff, 0x00, 0x00)
     try:
-        r = requests.post('http://led-service/display/e')
+        r = requests.post('http://led-service/display/e', timeout=3)
+        r = requests.post('http://inky-service/display/e', timeout=3)
     except requests.exceptions.RequestException as e:
         print e
 

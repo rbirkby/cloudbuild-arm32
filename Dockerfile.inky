@@ -1,10 +1,28 @@
-FROM resin/raspberry-pi-python:3
+FROM resin/raspberry-pi-python:2
 RUN apt-get update
-RUN sudo apt-get install python3-pip python3-dev python3-numpy
-RUN sudo pip3 install inkyphat
+RUN sudo apt-get install python-numpy python-pip python-markupsafe python-spidev python-rpi.gpio
+RUN sudo apt-get install python-pillow
+#.imagetk
+# python-dev 
+#raspi-gpio
+RUN python -m pip install --upgrade pip # https://stackoverflow.com/questions/49940813/pip-no-module-named-internal
+RUN pip install einky flask
+RUN pip install Pillow
 ADD src/inky/inky.py /
-CMD ["python3", "./inky.py", "Kubernetes"]
+EXPOSE 5000
+CMD ["python", "inky.py"]
 
-# On host, sudo raspi-config / 5 Interfacing Options #/ I2C / Enable
+# RPi.GPIO, spidev, MarkupSafe
+
+# FROM resin/raspberry-pi-python:3
+# RUN apt-get update
+# RUN sudo apt-get install python3-pip python3-dev
+# RUN sudo apt-get install python3-numpy python3-markupsafe
+# RUN sudo pip3 install inkyphat flask
+# ADD src/inky/inky.py /
+# EXPOSE 5000
+# CMD ["python3", "./inky.py"]
+
+# On host, sudo raspi-config / 5 Interfacing Options #/ SPI / Enable
 # docker build .
-# Run with docker run --device /dev/i2c-1 -it <tag>
+# Run with docker run --privileged -it <tag>

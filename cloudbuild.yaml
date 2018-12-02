@@ -14,30 +14,35 @@ steps:
   #   args: ['build', '-t=gcr.io/$PROJECT_ID/cloudbuild-arm32:golang', '-f=Dockerfile.golang', '.']
   #   waitFor: ['-']
 
-  # - id: prep-shim
-  #   name: 'gcr.io/cloud-builders/docker'
-  #   args: ['run', '--rm', '--privileged', 'multiarch/qemu-user-static:register', '--reset']
-  #   waitFor: ['-']
-
   - id: prep-shim
     name: multiarch/qemu-user-static:register
     args: ['--reset']
-    waitFor: ['-']    
+    waitFor: ['-']
+
+  - id: cache-base
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['pull', 'resin/raspberry-pi-python:2']
+    waitFor: ['-']
 
   - id: cache-led
     name: 'gcr.io/cloud-builders/docker'
     args: ['pull', 'gcr.io/$PROJECT_ID/cloudbuild-arm32:led']
-    waitFor: ['-']    
+    waitFor: [cache-base]
 
   - id: cache-buttons
     name: 'gcr.io/cloud-builders/docker'
     args: ['pull', 'gcr.io/$PROJECT_ID/cloudbuild-arm32:buttons']
-    waitFor: ['-']    
+    waitFor: [cache-base]
 
   - id: cache-tof
     name: 'gcr.io/cloud-builders/docker'
     args: ['pull', 'gcr.io/$PROJECT_ID/cloudbuild-arm32:tof']
-    waitFor: ['-']    
+    waitFor: [cache-base]
+
+  - id: cache-inky
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['pull', 'gcr.io/$PROJECT_ID/cloudbuild-arm32:inky']
+    waitFor: [cache-base]
 
   - id: build-led
     name: 'gcr.io/cloud-builders/docker'
@@ -49,10 +54,15 @@ steps:
       - '.'
     waitFor: [prep-shim, cache-led]
 
-  # - id: build-inky
-  #   name: 'gcr.io/cloud-builders/docker'
-  #   args: ['build', '-t=gcr.io/$PROJECT_ID/cloudbuild-arm32:inky', '-f=Dockerfile.inky', '.']
-  #   waitFor: [prep-shim]    
+  - id: build-inky
+    name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'build'
+      - '-t=gcr.io/$PROJECT_ID/cloudbuild-arm32:inky'
+      - '-f=Dockerfile.inky'
+      - '--cache-from=gcr.io/$PROJECT_ID/cloudbuild-arm32:inky' 
+      - '.'
+    waitFor: [prep-shim, cache-inky]
 
   - id: build-tof
     name: 'gcr.io/cloud-builders/docker'
@@ -62,7 +72,7 @@ steps:
       - '-f=Dockerfile.tof'
       - '--cache-from=gcr.io/$PROJECT_ID/cloudbuild-arm32:tof' 
       - '.'
-    waitFor: [prep-shim, cache-tof]   
+    waitFor: [prep-shim, cache-tof]
 
   - id: build-buttons
     name: 'gcr.io/cloud-builders/docker'
@@ -72,7 +82,7 @@ steps:
       - '-f=Dockerfile.buttons' 
       - '--cache-from=gcr.io/$PROJECT_ID/cloudbuild-arm32:buttons' 
       - '.'
-    waitFor: [prep-shim, cache-buttons]       
+    waitFor: [prep-shim, cache-buttons]
 
   # - id: push-cloudrun
   #   name: 'gcr.io/cloud-builders/docker'
@@ -84,10 +94,10 @@ steps:
     args: ["push", "gcr.io/$PROJECT_ID/cloudbuild-arm32:led"]
     waitFor: [build-led]
 
-  # - id: push-inky
-  #   name: 'gcr.io/cloud-builders/docker'
-  #   args: ["push", "gcr.io/$PROJECT_ID/cloudbuild-arm32:inky"]
-  #   waitFor: [build-inky]
+  - id: push-inky
+    name: 'gcr.io/cloud-builders/docker'
+    args: ["push", "gcr.io/$PROJECT_ID/cloudbuild-arm32:inky"]
+    waitFor: [build-inky]
 
   - id: push-tof
     name: 'gcr.io/cloud-builders/docker'
@@ -109,7 +119,7 @@ images:
   # - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:cloudrun'
   # - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:golang'
   - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:led'
-  # - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:inky'
+  - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:inky'
   - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:buttons'
   - 'gcr.io/$PROJECT_ID/cloudbuild-arm32:tof'
 
@@ -120,4 +130,4 @@ tags:
 timeout: 1200s
 
 options:
- machineType: UNSPECIFIED
+  machineType: UNSPECIFIED

@@ -5,10 +5,7 @@ RUN python -m pip install --upgrade pip # https://stackoverflow.com/questions/49
 RUN pip install flask
 
 ADD src/led/pulse.py /
-# ENV FLASK_APP /pulse.py
-# ENV FLASK_ENV development
 EXPOSE 5000
-# CMD ["flask", "run", "--host=0.0.0.0"]
 CMD ["python", "pulse.py"]
 
 # On host, sudo raspi-config / 5 Interfacing Options #/ I2C / Enable
