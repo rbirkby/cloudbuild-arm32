@@ -1,0 +1,53 @@
+# 1. scp rtl-sdr-blacklist.conf to /etc/modprobe.d/ on the *host* node
+# 2. Label the host node with the usb:sdr label. kubectl label nodes {node-name} usb=sdr
+# 3. Create fr24-k8s-secrets file with your FlightRadar24 sharing key
+# 4. Add the secrets to the cluster using create-secrets.sh
+# 5. Add this manifest to the cluster using kubectl apply -f fr24-service.yaml
+# 6. View the dashboard on http://cluster-node:30036/
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: fr24-service
+  labels:
+    app: fr24-service
+spec:
+  type: NodePort
+  ports:  
+    - name: http
+      port: 8080
+      targetPort: 8080
+      nodePort: 30036
+      protocol: TCP
+  selector:
+    app: fr24-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fr24-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fr24-service
+  template:
+    metadata:
+      labels:
+        app: fr24-service
+    spec:
+      nodeSelector:
+        usb: sdr
+      containers:
+      - name: fr24
+        image: nicosingh/rpi-fr24feed@sha256:f51563577e93d791d17b8730c518c783e053ffc18840af8a4dc483f574adf040
+        imagePullPolicy: Always
+        envFrom:
+        - secretRef:
+            name: fr24-secrets # kubectl create secret generic fr24-secrets --from-env-file=fr24-k8s-secrets
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "500m"
+        securityContext:
+          privileged: true
